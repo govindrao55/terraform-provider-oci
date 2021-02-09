@@ -25,3 +25,4 @@ vendor/github.com/oracle/oci-go-sdk/target
 *.test
 .gitmodules
 oci/record
+.goreleaser.yml
