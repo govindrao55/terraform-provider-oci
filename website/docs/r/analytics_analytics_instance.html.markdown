@@ -8,7 +8,7 @@ description: |-
 ---
 
 # oci_analytics_analytics_instance
-This resource provides the Analytics Instance resource in Oracle Cloud Infrastructure Analytics service.
+This resource test change provides the Analytics Instance resource in Oracle Cloud Infrastructure Analytics service.
 
 Create a new AnalyticsInstance in the specified compartment. The operation is long-running
 and creates a new WorkRequest.
