@@ -1,0 +1,56 @@
+# Visit https://goreleaser.com for documentation on how to customize this
+# behavior.
+before:
+  hooks:
+    # this is just an example and not a requirement for provider building/publishing
+    - go mod tidy
+builds:
+- env:
+    # goreleaser does not work with CGO, it could also complicate
+    # usage by users in CI/CD systems like Terraform Cloud where
+    # they are unable to install libraries.
+    - CGO_ENABLED=0
+  mod_timestamp: '1583951625'
+  flags:
+    - -trimpath
+  ldflags:
+    - '-s -w -X main.version=5.68.0 -X main.commit=c97d7546f917b2f09ccb9f71e716848670d5b57e'
+  goos:
+    - freebsd
+    - windows
+    - linux
+    - darwin
+  goarch:
+    - amd64
+    - '386'
+    - arm
+    - arm64
+  ignore:
+    - goos: darwin
+      goarch: '386'
+    - goos: freebsd
+      goarch: 'arm64'
+  binary: 'terraform-provider-oci_v5.68.0'
+archives:
+- format: zip
+  name_template: 'terraform-provider-oci_5.68.0_{{ .Os }}_{{ .Arch }}'
+checksum:
+  name_template: 'terraform-provider-oci_5.68.0_SHA256SUMS'
+  algorithm: sha256
+signs:
+  - artifacts: checksum
+    args:
+      # if you are using this in a GitHub action or some other automated pipeline, you 
+      # need to pass the batch flag to indicate its not interactive.
+      - "--batch"
+      - "--local-user"
+      - "88FF 4F83 3528 A66C F414  29A0 55AF D2B0 B3F7 8CD7" # set this environment variable for your signing key
+      - "--output"
+      - "${signature}"
+      - "--detach-sign"
+      - "${artifact}"
+release:
+  # If you want to manually examine the release before its live, uncomment this line:
+  # draft: true
+changelog:
+  skip: true
